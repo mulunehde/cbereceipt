@@ -23,7 +23,7 @@ COPY src/ ./src/
 COPY package.json tsconfig.json ./
 # Set environment variables
 ENV NODE_ENV=production
-ENV PORT 3000
+ENV PORT 8000
 ENV HOSTNAME localhost
-EXPOSE 3000
+EXPOSE 8000
 CMD ["bun", "src/index.ts"]

@@ -32,6 +32,7 @@ bot.command("receipt", async (ctx) => {
   }
 });
 
+const port = env.PORT || 8000;
 const handleUpdate = webhookCallback(bot, "std/http");
 
 Bun.serve({
@@ -47,5 +48,6 @@ Bun.serve({
     }
     return new Response();
   },
+  port
 });
 
