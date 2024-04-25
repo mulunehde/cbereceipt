@@ -1,4 +1,4 @@
-import { Bot, InputFile } from "grammy";
+import { Bot, InputFile, webhookCallback } from "grammy";
 import { env } from "@/env";
 
 const bot = new Bot(env.BOT_TOKEN);
@@ -32,4 +32,20 @@ bot.command("receipt", async (ctx) => {
   }
 });
 
-bot.start();
+const handleUpdate = webhookCallback(bot, "std/http");
+
+Bun.serve({
+  async fetch(req) {
+    try {
+      const url = new URL(req.url);
+      if (url.searchParams.get("secret") !== bot.token) {
+        return new Response("not allowed", { status: 403 });
+      }
+      return await handleUpdate(req);
+    } catch (err) {
+      console.log(err);
+    }
+    return new Response();
+  },
+});
+
